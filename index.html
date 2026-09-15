@@ -1,0 +1,138 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AR Treasure Hunt</title>
+
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+
+    <script>
+        let score = 0;
+
+        AFRAME.registerComponent('collect', {
+            init: function () {
+                this.el.addEventListener('click', () => {
+
+                    if (this.el.getAttribute('visible') === false) {
+                        return;
+                    }
+
+                    this.el.setAttribute('visible', false);
+
+                    score++;
+
+                    document.querySelector('#score').setAttribute(
+                        'value',
+                        'Crystals Collected: ' + score + ' / 5'
+                    );
+
+                    if (score === 5) {
+                        document.querySelector('#winMessage').setAttribute(
+                            'value',
+                            'YOU WIN! You found all the crystals!'
+                        );
+
+                        document.querySelector('#winMessage').setAttribute(
+                            'visible',
+                            true
+                        );
+                    }
+                });
+            }
+        });
+    </script>
+</head>
+
+<body>
+
+<a-scene>
+
+    <a-assets>
+        <a-mixin
+            id="crystal"
+            geometry="primitive: octahedron; radius: 0.4"
+            material="color: cyan; emissive: cyan; emissiveIntensity: 0.5"
+            animation="property: rotation; to: 360 360 360; loop: true; dur: 4000">
+        </a-mixin>
+    </a-assets>
+
+
+    <a-sky color="#10152e"></a-sky>
+
+
+    <a-plane
+        position="0 0 -4"
+        rotation="-90 0 0"
+        width="20"
+        height="20"
+        color="#182818">
+    </a-plane>
+
+
+    <a-entity
+        position="-2 1.5 -3"
+        mixin="crystal"
+        collect>
+    </a-entity>
+
+    <a-entity
+        position="2 1.5 -4"
+        mixin="crystal"
+        collect>
+    </a-entity>
+
+    <a-entity
+        position="-3 2 -6"
+        mixin="crystal"
+        collect>
+    </a-entity>
+
+    <a-entity
+        position="3 1 -7"
+        mixin="crystal"
+        collect>
+    </a-entity>
+
+    <a-entity
+        position="0 3 -8"
+        mixin="crystal"
+        collect>
+    </a-entity>
+
+
+    <a-text
+        id="score"
+        value="Crystals Collected: 0 / 5"
+        position="-1.8 3 -4"
+        width="5"
+        color="white">
+    </a-text>
+
+
+    <a-text
+        id="winMessage"
+        value="YOU WIN!"
+        position="-2 2 -3"
+        width="5"
+        color="yellow"
+        visible="false">
+    </a-text>
+
+
+    <a-camera position="0 1.6 0">
+
+        <a-cursor
+            raycaster="objects: [collect]"
+            fuse="true"
+            fuse-timeout="1200"
+            color="yellow">
+        </a-cursor>
+
+    </a-camera>
+
+
+</a-scene>
+
+</body>
+</html>
+```
